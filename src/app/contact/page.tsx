@@ -73,7 +73,7 @@ const ContactPage = () => {
         <div className="space-y-8">
           <h2 className="text-2xl font-semibold mb-4">Get In Touch</h2>
           <p className="text-secondary md:w-2/3">
-            I'm Always open to discussing new projects, creative ideas, or
+            Im Always open to discussing new projects, creative ideas, or
             opportunities to be part of your journey.
           </p>
           <div className="space-y-8">
