@@ -12,12 +12,20 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 
+import { motion } from "framer-motion";
+import { fadeIn, fadeInUp, scaleIn } from "@/utils/animations";
+
 const Hero = () => {
   return (
     <section className="py-28 container max-w-7xl mx-auto px-4">
       <div className="max-w-xl mx-auto text-center">
         {/* Profile Image */}
-        <div className="flex flex-col items-center justify-center mb-8">
+
+        <motion.div
+          {...scaleIn}
+          transition={{ delay: 0.2 }}
+          className="flex flex-col items-center justify-center mb-8"
+        >
           <div className="relative group w-48 h-48 md:w-60 md:h-60 perspective">
             {/* Optimized Glow */}
             <div className="absolute inset-0 rounded-[40%_60%_35%_65%] bg-gradient-to-tr from-blue-500 via-purple-600 to-pink-500 opacity-50 filter blur-xl animate-blob1 transition-transform duration-700 group-hover:scale-105"></div>
@@ -48,23 +56,31 @@ const Hero = () => {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Heading */}
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-5 leading-tight tracking-tight">
+        <motion.h1
+          {...fadeInUp}
+          transition={{ delay: 0.4 }}
+          className="text-4xl md:text-6xl font-extrabold mb-5 leading-tight tracking-tight"
+        >
           <span className="text-gray-800 dark:text-gray-100">Hello, I’m</span>{" "}
           <span className="bg-gradient-to-r from-blue-700 via-purple-600 to-pink-600 text-transparent bg-clip-text animate-gradient">
             Mukesh Lilawat
           </span>
-        </h1>
+        </motion.h1>
 
         {/* Tagline / Description */}
-        <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <motion.p
+          {...fadeInUp}
+          transition={{ delay: 0.6 }}
+          className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed"
+        >
           Passionate <strong>Full-Stack Developer</strong> with a deep interest
           in <strong>Artificial Intelligence</strong> and{" "}
           <strong>Machine Learning</strong>. I love creating innovative,
           user-focused, and future-ready web applications that make an impact.
-        </p>
+        </motion.p>
 
         {/* Social Links */}
         <div className="flex justify-center space-x-6 mb-10">

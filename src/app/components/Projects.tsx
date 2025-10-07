@@ -12,7 +12,7 @@ const Projects = () => {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-        {projects.map((project) => (
+        {projects.slice(0, 3).map((project) => (
           <article
             key={project.title}
             className="group relative bg-white dark:bg-dark/40 rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-500 hover:scale-105 hover:rotate-1 hover:shadow-3xl"
@@ -78,6 +78,16 @@ const Projects = () => {
             <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-400 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></span>
           </article>
         ))}
+      </div>
+
+      {/* View More Projects Button */}
+      <div className="text-center mt-16">
+        <Link
+          href="/projects"
+          className="inline-block bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-400 text-white font-semibold px-12 py-5 rounded-2xl shadow-lg hover:scale-105 transition-all duration-500"
+        >
+          View More Projects
+        </Link>
       </div>
     </section>
   );
