@@ -5,9 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { it } from "node:test";
 import React, { useState } from "react";
+import { useTheme } from "../context/themContext";
 
 const Navbar = () => {
-  const theme = "dark"; //TODO: get theme from context
+  const { theme, toggleTheme } = useTheme();
+  // const theme = "dark"; //TODO: get theme from context
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   //   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const pathName = usePathname();
@@ -24,7 +26,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed w-full  dark:bg-dark/85 backdrop-blur-md z-50">
+    <nav className="fixed w-full bg-white/80  dark:bg-dark/85 backdrop-blur-md z-50 border-b border-gray-200 dark:border-gray-700">
       <div className="container max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -52,7 +54,10 @@ const Navbar = () => {
               );
             })}
 
-            <button className="p-2 rounded-lg hover:bg-gray-100 text-primary dark:hover:bg-gray-800 transition-colors">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:text-white hover:text-primary dark:hover:bg-gray-800 transition-colors"
+            >
               {theme === "dark" ? (
                 <SunIcon className="w-5 h-5" />
               ) : (
@@ -90,7 +95,10 @@ const Navbar = () => {
               ))}
 
               <div>
-                <button className="flex items-center py-2 hover:text-primary transition-colors">
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center py-2 hover:text-primary transition-colors"
+                >
                   {theme === "dark" ? (
                     <>
                       <SunIcon className="w-5 h-5 mr-2" />
