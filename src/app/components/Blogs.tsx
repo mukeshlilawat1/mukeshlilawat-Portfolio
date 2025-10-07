@@ -14,7 +14,7 @@ const Blogs = () => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-        {blogs.map((blog) => (
+        {blogs.slice(0, 3).map((blog) => (
           <article
             key={blog.slug}
             className="group relative bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-500 hover:shadow-2xl hover:shadow-purple-500/20"
@@ -58,7 +58,7 @@ const Blogs = () => {
           href="/blogs"
           className="inline-block bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white font-semibold px-12 py-5 rounded-2xl shadow-lg hover:scale-105 transition-all duration-500"
         >
-          View All Blogs
+          View More Blogs
         </Link>
       </div>
     </section>
