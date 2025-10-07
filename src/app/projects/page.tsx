@@ -71,9 +71,9 @@ const Projects = () => {
                   </Link>
                 )}
 
-                {project.liveLink && (
+                {project.demoLink && (
                   <Link
-                    href={project.liveLink}
+                    href={project.demoLink}
                     target="_blank"
                     className="flex items-center gap-2 text-secondary hover:text-primary transition-all font-medium"
                   >

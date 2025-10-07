@@ -56,7 +56,7 @@ const Projects = () => {
               {/* Links */}
               <div className="flex gap-6">
                 <Link
-                  href={project.githubLink}
+                  href={project.githubLink ?? "#"}
                   target="_blank"
                   className="flex items-center gap-2 text-secondary hover:text-primary transition-all font-medium"
                 >
@@ -65,7 +65,7 @@ const Projects = () => {
                 </Link>
 
                 <Link
-                  href={project.githubLink}
+                  href={project.githubLink ?? "#"}
                   target="_blank"
                   className="flex items-center gap-2 text-secondary hover:text-primary transition-all font-medium"
                 >
