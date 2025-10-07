@@ -63,3 +63,37 @@ a {
     opacity: 1;
   }
 }
+
+@keyframes blob1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  25% { transform: translate(6px,-8px) scale(1.04); }
+  50% { transform: translate(-4px,6px) scale(0.96); }
+  75% { transform: translate(3px,4px) scale(1.02); }
+}
+
+@keyframes blob2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  25% { transform: translate(-7px,4px) scale(1.03); }
+  50% { transform: translate(4px,-6px) scale(0.97); }
+  75% { transform: translate(-3px,-3px) scale(1.01); }
+}
+
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 0.3; }
+  50% { transform: scale(1.2); opacity: 0.1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.animate-blob1 { animation: blob1 10s infinite ease-in-out; }
+.animate-blob2 { animation: blob2 12s infinite ease-in-out; }
+.animate-ripple { animation: ripple 1s forwards; }
+
+
+@keyframes scaleX {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+.animate-scaleX {
+  animation: scaleX 0.4s forwards;
+}
