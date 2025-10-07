@@ -48,7 +48,7 @@ const Projects = () => {
 
               {/* Animated tech badges */}
               <div className="flex flex-wrap gap-3 mb-6">
-                {project.technologies.map((tech, idx) => (
+                {project.technologies.map((tech:string, idx:number) => (
                   <span
                     key={idx}
                     className="px-4 py-1 bg-gradient-to-r from-purple-300 via-pink-300 to-yellow-300 text-white rounded-full text-sm font-semibold transition-transform transform hover:scale-110 hover:-translate-y-1"
