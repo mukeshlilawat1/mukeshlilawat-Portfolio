@@ -1,15 +1,6 @@
+import { Project } from "@/types";
 
-
-export interface project {
-  title: string;
-  description: string;
-  technologies: string[];
-  githubLink: string;
-  demoLink: string;
-  Image: string;
-}
-
-export const projects: project[] = [
+export const projects: Project[] = [
   // ===================== Full-Stack Projects (Coming Soon) =====================
   {
     title: 'Hotel Booking App',

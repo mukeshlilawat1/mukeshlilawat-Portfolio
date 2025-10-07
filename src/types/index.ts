@@ -1,11 +1,12 @@
-interface Projects {
-    title: string;
-    description: string;
-    technologies: string[];
-    githubLink: string;
-    demoLink: string;
-    image: string;
+export interface Project {
+  title: string;
+  description: string;
+  technologies: string[];
+  githubLink?: string;
+  demoLink?: string;
+  Image: string;
 }
+
 
 export interface Blog {
     title: string;
