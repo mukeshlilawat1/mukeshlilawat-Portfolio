@@ -149,7 +149,7 @@ const Hero = () => {
           </Link>
 
           <Link
-            href="/projects"
+            href="/contact"
             className="bg-gray-800 text-white px-10 py-4 rounded-lg shadow-md hover:bg-indigo-800 hover:shadow-lg transition-all duration-300 font-medium"
           >
             Contact Me
