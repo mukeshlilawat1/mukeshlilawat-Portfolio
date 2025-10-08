@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -17,11 +18,18 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Mukesh Lilawat | Full-Stack Developer & AI/ML Enthusiast",
-  description: "Portfolio of Mukesh Lilawat — Building modern web apps using React, Spring Boot, and AI/ML integration.",
-    icons: {
+  description:
+    "Portfolio of Mukesh Lilawat — Building modern web apps using React, Spring Boot, and AI/ML integration.",
+  icons: {
     icon: "/favicon.ico", // yaha path
   },
-  keywords: ["Mukesh Lilawat", "Full Stack Developer", "React", "Spring Boot", "AI ML"],
+  keywords: [
+    "Mukesh Lilawat",
+    "Full Stack Developer",
+    "React",
+    "Spring Boot",
+    "AI ML",
+  ],
   openGraph: {
     title: "Mukesh Lilawat",
     description: "Building future-ready web apps using modern technologies.",
@@ -39,7 +47,6 @@ export const metadata = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -55,6 +62,7 @@ export default function RootLayout({
           <main className="min-h-screen pt-24">{children}</main>
           <Footer />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
