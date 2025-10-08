@@ -2,12 +2,14 @@
 import React from 'react';
 import { ImageResponse } from '@vercel/og'
 
-export const config = { runtime: 'edge' }
+// Edge runtime specify karna mandatory
+export const runtime = 'edge'
 
-export default function handler() {
+// GET request handle karne ke liye function
+export async function GET() {
   return new ImageResponse(
     React.createElement(
-      "div",
+      'div',
       {
         style: {
           fontSize: 60,
@@ -19,7 +21,7 @@ export default function handler() {
           justifyContent: 'center',
         }
       },
-      "Mukesh Lilawat"
+      'Mukesh Lilawat'
     ),
     { width: 1200, height: 630 }
   )
