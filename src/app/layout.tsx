@@ -17,33 +17,59 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Mukesh Lilawat | Full-Stack Developer & AI/ML Enthusiast",
+  metadataBase: new URL("https://mukeshlilawat.online/"), // ⚡ Production domain
+  title: "Mukesh Lilawat – Full-Stack Developer & AI/ML Enthusiast",
   description:
-    "Portfolio of Mukesh Lilawat — Building modern web apps using React, Spring Boot, and AI/ML integration.",
-  icons: {
-    icon: "/favicon.ico", // yaha path
-  },
+    "Mukesh Lilawat – Full-Stack Developer with expertise in Java, React, Spring Boot & AI/ML. Explore projects, portfolio, and innovative web apps.",
   keywords: [
     "Mukesh Lilawat",
-    "Full Stack Developer",
-    "React",
+    "Full-Stack Developer",
+    "AI",
+    "Machine Learning",
+    "Java Developer",
+    "React Developer",
     "Spring Boot",
-    "AI ML",
+    "Portfolio",
+    "Web Applications",
   ],
+  authors: [{ name: "Mukesh Lilawat", url: "https://mukeshlilawat.online" }],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   openGraph: {
-    title: "Mukesh Lilawat",
-    description: "Building future-ready web apps using modern technologies.",
-    url: "https://mukeshlilawat.online",
-    siteName: "Mukesh Lilawat",
+    title: "Mukesh Lilawat – Full-Stack Developer & AI/ML Enthusiast",
+    description:
+      "Passionate Full-Stack Developer Mukesh Lilawat creating innovative web apps using Java, React, Spring Boot & AI/ML.",
+    url: "/",
+    siteName: "Mukesh Lilawat Portfolio",
+    type: "website",
     images: [
       {
-        url: "/og-image.png",
+        url: "/api/og",
         width: 1200,
         height: 630,
+        alt: "Mukesh Lilawat – Full-Stack Developer Profile Picture",
       },
     ],
-    locale: "en_IN",
-    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mukesh Lilawat – Full-Stack Developer & AI/ML Enthusiast",
+    description:
+      "Explore Mukesh Lilawat's projects and portfolio: Java, React, Spring Boot & AI/ML web applications.",
+    images: ["/api/og"],
+    site: "@coder_lilawat",
+    creator: "@coder_lilawat",
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-32x32.png",
+    apple: "/apple-touch-icon.png",
   },
 };
 
