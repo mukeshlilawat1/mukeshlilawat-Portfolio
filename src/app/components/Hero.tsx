@@ -195,27 +195,32 @@ const Hero = () => {
             ))}
           </div>
 
-          {/* Buttons */}
-          <div className="flex flex-col md:flex-row justify-center gap-6 m-5 p-5">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            {/* Projects Button */}
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05 }} // desktop hover
+              whileTap={{ scale: 0.95 }} // mobile tap
               transition={{ type: "spring", stiffness: 120 }}
+              className="w-full sm:w-auto"
             >
               <Link
                 href="/projects"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-4 rounded-lg shadow-md hover:shadow-lg hover:opacity-90 transition-all duration-300 font-medium"
+                className="block w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 sm:px-10 py-4 rounded-lg shadow-md hover:shadow-lg focus:shadow-lg hover:opacity-90 transition-all duration-300 font-medium text-center"
               >
                 View Projects
               </Link>
             </motion.div>
 
+            {/* Contact Me Button */}
             <motion.div
               whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 120 }}
+              className="w-full sm:w-auto"
             >
               <Link
                 href="/contact"
-                className="bg-gray-800 text-white px-10 py-4 rounded-lg shadow-md hover:bg-indigo-800 hover:shadow-lg transition-all duration-300 font-medium"
+                className="block w-full sm:w-auto bg-gray-800 text-white px-6 sm:px-10 py-4 rounded-lg shadow-md hover:bg-indigo-800 focus:bg-indigo-800 hover:shadow-lg focus:shadow-lg transition-all duration-300 font-medium text-center"
               >
                 Contact Me
               </Link>
