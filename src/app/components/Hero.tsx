@@ -42,10 +42,19 @@ const Hero = () => {
           result?.data?.matchedUser?.submitStatsGlobal?.acSubmissionNum || [];
         const contest = result?.data?.userContestRanking;
 
-        const total = stats.find((d) => d.difficulty === "All")?.count || 0;
-        const easy = stats.find((d) => d.difficulty === "Easy")?.count || 0;
-        const medium = stats.find((d) => d.difficulty === "Medium")?.count || 0;
-        const hard = stats.find((d) => d.difficulty === "Hard")?.count || 0;
+        type DifficultyData = { difficulty: string; count: number };
+
+        const total =
+          stats.find((d: DifficultyData) => d.difficulty === "All")?.count || 0;
+        const easy =
+          stats.find((d: DifficultyData) => d.difficulty === "Easy")?.count ||
+          0;
+        const medium =
+          stats.find((d: DifficultyData) => d.difficulty === "Medium")?.count ||
+          0;
+        const hard =
+          stats.find((d: DifficultyData) => d.difficulty === "Hard")?.count ||
+          0;
 
         setLeetcode({
           total,
