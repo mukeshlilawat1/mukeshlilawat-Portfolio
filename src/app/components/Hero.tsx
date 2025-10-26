@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,11 +11,61 @@ import {
   FaLinkedinIn,
   FaTwitter,
   FaYoutube,
+  FaFileDownload,
+  FaCode,
+  FaChartLine,
+  FaTrophy,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { fadeIn, fadeInUp, scaleIn } from "@/utils/animations";
+import { fadeInUp, scaleIn } from "@/utils/animations";
 
 const Hero = () => {
+  const [leetcode, setLeetcode] = useState({
+    total: 0,
+    easy: 0,
+    medium: 0,
+    hard: 0,
+    rating: 0,
+    contests: 0,
+  });
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchLeetcodeData() {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/leetcode", { cache: "no-store" });
+        const result = await res.json();
+
+        const stats =
+          result?.data?.matchedUser?.submitStatsGlobal?.acSubmissionNum || [];
+        const contest = result?.data?.userContestRanking;
+
+        const total = stats.find((d) => d.difficulty === "All")?.count || 0;
+        const easy = stats.find((d) => d.difficulty === "Easy")?.count || 0;
+        const medium = stats.find((d) => d.difficulty === "Medium")?.count || 0;
+        const hard = stats.find((d) => d.difficulty === "Hard")?.count || 0;
+
+        setLeetcode({
+          total,
+          easy,
+          medium,
+          hard,
+          rating: contest?.rating?.toFixed(0) || 0,
+          contests: contest?.attendedContestsCount || 0,
+        });
+
+        setLoading(false);
+      } catch (err) {
+        console.error("LeetCode fetch error:", err);
+        setLoading(false);
+      }
+    }
+
+    fetchLeetcodeData();
+  }, []);
+
   return (
     <>
       {/* ========================= SEO META HEAD ========================= */}
@@ -28,13 +78,12 @@ const Hero = () => {
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://mukeshlilawat.online/" />
 
-        {/* Open Graph / Social Sharing */}
         <meta
-          property="og:mukeshlilawat"
+          property="og:title"
           content="Mukesh Lilawat – Full-Stack Developer & AI/ML Enthusiast"
         />
         <meta
-          property="og:fullstackdeveloper"
+          property="og:description"
           content="Passionate Full-Stack Developer Mukesh Lilawat creating innovative web apps using Java, React, Spring Boot & AI/ML."
         />
         <meta property="og:type" content="website" />
@@ -44,14 +93,13 @@ const Hero = () => {
           content="https://mukeshlilawat.online/lilawat-og.jpg"
         />
 
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta
-          name="twitter:lilawat"
+          name="twitter:title"
           content="Mukesh Lilawat – Full-Stack Developer & AI/ML Enthusiast"
         />
         <meta
-          name="twitter:fullstackdeveloper"
+          name="twitter:description"
           content="Explore Mukesh Lilawat's projects and portfolio: Java, React, Spring Boot & AI/ML web applications."
         />
         <meta
@@ -81,21 +129,10 @@ const Hero = () => {
               transition={{ delay: 0.2, duration: 0.8 }}
               className="relative group w-48 h-48 md:w-60 md:h-60 perspective"
             >
-              {/* Glow & Gradient layers */}
               <div className="absolute inset-0 rounded-[40%_60%_35%_65%] bg-gradient-to-tr from-blue-500 via-purple-600 to-pink-500 opacity-50 filter blur-xl animate-blob1 transition-transform duration-700 group-hover:scale-105"></div>
               <div className="absolute inset-0 rounded-[50%_35%_65%_40%] bg-gradient-to-br from-cyan-400 via-indigo-500 to-pink-400 opacity-30 filter blur-lg animate-blob2 transition-transform duration-700 group-hover:scale-105"></div>
 
-              {/* Main Image */}
               <div className="relative w-full h-full overflow-hidden shadow-2xl ring-4 ring-white dark:ring-gray-800 transform transition-transform duration-500 group-hover:scale-105">
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500 via-purple-600 to-pink-500 opacity-30 filter blur-3xl animate-blob1 transition-all duration-700 group-hover:opacity-50"></div>
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-indigo-500 to-pink-400 opacity-25 filter blur-2xl animate-blob2 transition-all duration-700 group-hover:opacity-40"></div>
-                <div className="absolute inset-0 bg-white/10 backdrop-blur-md pointer-events-none mix-blend-overlay"></div>
-                <div className="absolute inset-0 border-2 border-transparent group-hover:border-pink-500 pointer-events-none transition-all duration-500"></div>
-                <div className="absolute inset-0 pointer-events-none">
-                  <div className="w-full h-full bg-pink-500 opacity-0 group-hover:opacity-20 animate-ripple rounded-none"></div>
-                </div>
-
-                {/* SEO-Friendly Image */}
                 <Image
                   src="/lilawat.jpg"
                   alt="Mukesh Lilawat Profile Picture – Full-Stack Developer"
@@ -125,7 +162,7 @@ const Hero = () => {
             </motion.span>
           </motion.h1>
 
-          {/* Tagline / Description */}
+          {/* Tagline */}
           <motion.p
             {...fadeInUp}
             transition={{ delay: 0.6 }}
@@ -154,7 +191,7 @@ const Hero = () => {
               },
               {
                 icon: FaDiscord,
-                link: "https://github.com/mukeshlilawat1",
+                link: "https://discord.com/users/mukeshlilawat",
                 label: "Discord",
               },
               {
@@ -169,7 +206,7 @@ const Hero = () => {
               },
               {
                 icon: FaYoutube,
-                link: "https://github.com/mukeshlilawat1",
+                link: "https://www.youtube.com/@StackHuntByLilawat",
                 label: "YouTube",
               },
             ].map((social, index) => (
@@ -195,37 +232,155 @@ const Hero = () => {
             ))}
           </div>
 
+          {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            {/* Projects Button */}
-            <motion.div
-              whileHover={{ scale: 1.05 }} // desktop hover
-              whileTap={{ scale: 0.95 }} // mobile tap
-              transition={{ type: "spring", stiffness: 120 }}
-              className="w-full sm:w-auto"
-            >
+            <motion.div whileHover={{ scale: 1.05 }}>
               <Link
                 href="/projects"
-                className="block w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 sm:px-10 py-4 rounded-lg shadow-md hover:shadow-lg focus:shadow-lg hover:opacity-90 transition-all duration-300 font-medium text-center"
+                className="block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg shadow-md hover:opacity-90 transition-all duration-300 font-medium"
               >
                 View Projects
               </Link>
             </motion.div>
 
-            {/* Contact Me Button */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 120 }}
-              className="w-full sm:w-auto"
-            >
+            <motion.div whileHover={{ scale: 1.05 }}>
               <Link
                 href="/contact"
-                className="block w-full sm:w-auto bg-gray-800 text-white px-6 sm:px-10 py-4 rounded-lg shadow-md hover:bg-indigo-800 focus:bg-indigo-800 hover:shadow-lg focus:shadow-lg transition-all duration-300 font-medium text-center"
+                className="block bg-gray-800 text-white px-8 py-4 rounded-lg shadow-md hover:bg-indigo-800 transition-all duration-300 font-medium"
               >
                 Contact Me
               </Link>
             </motion.div>
           </div>
+
+          {/* ====================== LEETCODE SECTION ====================== */}
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 120, damping: 10 }}
+            className="relative rounded-3xl shadow-xl hover:shadow-yellow-400/40 mt-16 md:mt-20"
+          >
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-yellow-400 via-orange-400 to-yellow-600 p-[2px]"></div>
+            <div className="relative bg-white dark:bg-gray-900 rounded-3xl px-6 md:px-8 py-6 md:py-8 text-center z-10 border border-yellow-200/40 dark:border-yellow-700/30">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="flex justify-center items-center gap-3 mb-4">
+                  <FaCode className="text-3xl md:text-4xl text-yellow-500 drop-shadow-lg" />
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100">
+                    My LeetCode Stats
+                  </h3>
+                </div>
+
+                <p className="text-gray-600 dark:text-gray-400 mb-6 text-base md:text-lg leading-relaxed">
+                  Problem-solving fuels innovation. Here’s how I’m sharpening my
+                  skills daily ⚡
+                </p>
+
+                {/* === Stats Card === */}
+                <div className="bg-gradient-to-tr from-yellow-50 via-white to-yellow-100 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 rounded-2xl py-5 px-6 md:py-6 md:px-8 shadow-inner border border-yellow-200 dark:border-yellow-700">
+                  {loading ? (
+                    <div className="animate-pulse">
+                      <h4 className="text-3xl font-bold text-yellow-500 mb-2">
+                        Loading...
+                      </h4>
+                      <p className="text-gray-400 text-sm">
+                        Fetching your stats...
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <h4 className="text-4xl md:text-5xl font-extrabold text-yellow-500 mb-2">
+                        {leetcode.total}+
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base mb-3">
+                        Total Problems Solved
+                      </p>
+
+                      <div className="flex justify-center gap-4 md:gap-6 text-xs md:text-sm font-medium mb-3">
+                        <span className="text-green-500">
+                          Easy: {leetcode.easy}
+                        </span>
+                        <span className="text-yellow-500">
+                          Medium: {leetcode.medium}
+                        </span>
+                        <span className="text-red-500">
+                          Hard: {leetcode.hard}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-center items-center gap-6 mt-3 text-sm md:text-base font-semibold">
+                        <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                          <FaChartLine className="text-lg" />
+                          Rating:{" "}
+                          {leetcode.rating > 0 ? leetcode.rating : "N/A"}
+                        </div>
+                        <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400">
+                          <FaTrophy className="text-lg" />
+                          Contests: {leetcode.contests || 0}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="mt-6 md:mt-8"
+                >
+                  <Link
+                    href="https://leetcode.com/u/mukeshlilawat/"
+                    target="_blank"
+                    className="inline-flex items-center gap-2 md:gap-3 bg-yellow-500 text-white px-5 md:px-6 py-2 md:py-3 rounded-lg md:rounded-xl shadow-md hover:bg-yellow-600 hover:shadow-yellow-400/40 transition-all duration-300 text-sm md:text-base font-semibold"
+                  >
+                    <FaCode className="text-xl md:text-2xl" />
+                    Visit My LeetCode
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </div>
+            <div className="absolute inset-0 rounded-3xl bg-yellow-400 opacity-20 blur-3xl -z-10 animate-pulse"></div>
+          </motion.div>
+
+          {/* ====================== RESUME SECTION ====================== */}
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 120, damping: 10 }}
+            className="relative rounded-3xl shadow-xl hover:shadow-blue-500/40 mt-16 md:mt-20"
+          >
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-600 p-[2px]"></div>
+            <div className="relative bg-white dark:bg-gray-900 rounded-3xl px-6 md:px-8 py-8 md:py-10 text-center z-10 border border-blue-200/40 dark:border-blue-700/30">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="flex justify-center items-center gap-3 mb-4">
+                  <FaFileDownload className="text-3xl md:text-4xl text-blue-500 drop-shadow-lg" />
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100">
+                    Download My Resume
+                  </h3>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-6 text-base md:text-lg leading-relaxed">
+                  Explore my professional journey, skills, and experience in
+                  detail.
+                </p>
+                <motion.div whileHover={{ scale: 1.05 }}>
+                  <Link
+                    href="/public/lilawat1.pdf"
+                    target="_blank"
+                    download
+                    className="inline-flex items-center gap-2 md:gap-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-5 md:px-6 py-2 md:py-3 rounded-lg md:rounded-xl shadow-md hover:shadow-blue-500/40 transition-all duration-300 text-sm md:text-base font-semibold"
+                  >
+                    <FaFileDownload className="text-xl md:text-2xl" />
+                    Download Resume (PDF)
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </div>
+            <div className="absolute inset-0 rounded-3xl bg-blue-400 opacity-20 blur-3xl -z-10 animate-pulse"></div>
+          </motion.div>
         </div>
       </section>
     </>

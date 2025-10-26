@@ -29,12 +29,42 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { href: "https://github.com/mukeshlilawat1", icon: <FaGithub />, label: "GitHub", hover: "text-gray-800 dark:text-gray-100" },
-    { href: "https://www.linkedin.com/in/mukeshlilawat1", icon: <FaLinkedinIn />, label: "LinkedIn", hover: "text-blue-700 dark:text-blue-400" },
-    { href: "https://github.com/mukeshlilawat1", icon: <FaDiscord />, label: "Discord", hover: "text-indigo-600 dark:text-indigo-400" },
-    { href: "https://x.com/coder_lilawat", icon: <FaTwitter />, label: "Twitter", hover: "text-sky-500 dark:text-sky-400" },
-    { href: "https://www.instagram.com/mukeshlilawat1", icon: <FaInstagram />, label: "Instagram", hover: "text-pink-500 dark:text-pink-400" },
-    { href: "https://github.com/mukeshlilawat1", icon: <FaYoutube />, label: "YouTube", hover: "text-red-600 dark:text-red-400" },
+    {
+      href: "https://github.com/mukeshlilawat1",
+      icon: <FaGithub />,
+      label: "GitHub",
+      hover: "text-gray-800 dark:text-gray-100",
+    },
+    {
+      href: "https://www.linkedin.com/in/mukeshlilawat1",
+      icon: <FaLinkedinIn />,
+      label: "LinkedIn",
+      hover: "text-blue-700 dark:text-blue-400",
+    },
+    {
+      href: "https://discord.gg/NDYV6NaZ",
+      icon: <FaDiscord />,
+      label: "Discord",
+      hover: "text-indigo-600 dark:text-indigo-400",
+    },
+    {
+      href: "https://x.com/coder_lilawat",
+      icon: <FaTwitter />,
+      label: "Twitter",
+      hover: "text-sky-500 dark:text-sky-400",
+    },
+    {
+      href: "https://www.instagram.com/mukeshlilawat1",
+      icon: <FaInstagram />,
+      label: "Instagram",
+      hover: "text-pink-500 dark:text-pink-400",
+    },
+    {
+      href: "https://www.youtube.com/@MukeshLilawat1",
+      icon: <FaYoutube />,
+      label: "YouTube",
+      hover: "text-red-600 dark:text-red-400",
+    },
   ];
 
   const footerLinks = [

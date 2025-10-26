@@ -65,7 +65,7 @@ const ContactPage = () => {
   return (
     <div className="container max-w-7xl mx-auto py-20 px-4 md:px-0">
       <h1 className="text-4xl font-bold mb-20 text-center bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-cyan-400 to-blue-500">
-        Content Me
+        Contact Me
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -83,10 +83,11 @@ const ContactPage = () => {
                 label: "Email",
                 content: (
                   <Link
-                    href="mailto:mukeshlilawat@mukeshlilawat.online"
+                    href="mailto:mukeshkumarlilawat1.gmail.com"
                     className="text-secondary hover:text-primary transition-colors duration-200"
                   >
-                    mukeshlilawat@mukeshlilawat.online
+                    mukeshkumarlilawat1@gmail.com
+
                   </Link>
                 ),
               },
