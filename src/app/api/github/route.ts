@@ -1,22 +1,41 @@
 import { NextResponse } from "next/server";
 
+interface Repo {
+  stargazers_count: number;
+}
+
+interface GitHubUser {
+  public_repos: number;
+  followers: number;
+  following: number;
+  repos_url: string;
+}
+
 export async function GET() {
   try {
     const username = "mukeshlilawat1";
-    const res = await fetch(`https://api.github.com/users/${'mukeshlilawat1'}`, {
+    const res = await fetch(`https://api.github.com/users/${username}`, {
       headers: {
         "User-Agent": "next-app",
       },
       cache: "no-store",
     });
 
-    const user = await res.json();
+    if (!res.ok) {
+      throw new Error("Failed to fetch GitHub user");
+    }
 
-    // Optional: fetch repos to count stars
-    const reposRes = await fetch(user.repos_url);
-    const repos = await reposRes.json();
+    const user: GitHubUser = await res.json();
+
+    const reposRes = await fetch(user.repos_url, { cache: "no-store" });
+    if (!reposRes.ok) {
+      throw new Error("Failed to fetch GitHub repos");
+    }
+
+    const repos: Repo[] = await reposRes.json();
+
     const stars = repos.reduce(
-      (acc: number, repo: any) => acc + repo.stargazers_count,
+      (acc, repo) => acc + (repo.stargazers_count || 0),
       0
     );
 
@@ -28,6 +47,8 @@ export async function GET() {
     });
   } catch (error) {
     console.error("GitHub API Error:", error);
-    return NextResponse.json({ error: "Failed to fetch GitHub stats" }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch GitHub stats";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

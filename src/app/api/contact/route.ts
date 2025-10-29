@@ -1,50 +1,49 @@
-import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
-interface ContactRequestBody {
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+interface ContactBody {
   name: string;
   email: string;
   message: string;
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as ContactRequestBody;
+    const body: ContactBody = await request.json();
 
-    // Debugging env variables
-    console.log("SMTP_HOST:", process.env.SMTP_HOST);
-    console.log("SMTP_USER:", process.env.SMTP_USER);
-    console.log("SMTP_PASS:", process.env.SMTP_PASS ? "exists" : "missing");
-    console.log("CONTACT_RECEIVER_EMAIL:", process.env.CONTACT_RECEIVER_EMAIL);
+    if (!body.name || !body.email || !body.message) {
+      return NextResponse.json(
+        { success: false, message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
 
-    // Nodemailer transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST, // must match HostAsia SSL hostname
-      port: Number(process.env.SMTP_PORT), // 465
-      secure: true, // true for 465 (SSL)
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false, // ONLY if SSL error persists (testing), remove in production
-      },
+    await resend.emails.send({
+      from: `${body.name} <onboarding@resend.dev>`,
+      to: process.env.CONTACT_RECEIVER_EMAIL || "",
+      subject: `New message from ${body.name}`,
+      html: `
+        <div style="font-family:Arial;padding:10px">
+          <h2>New Message</h2>
+          <p>${body.message}</p>
+          <p>From: <b>${body.name}</b> (${body.email})</p>
+        </div>
+      `,
     });
 
-    const mailOptions = {
-      from: `"${body.name}" <${process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_RECEIVER_EMAIL,
-      subject: `New message from ${body.name}`,
-      text: `${body.message}\nFrom: ${body.name} - ${body.email}`,
-      html: `<p>${body.message}</p><p>From: ${body.name} - ${body.email}</p>`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    return NextResponse.json({ message: "Message sent Successfully" }, { status: 200 });
+    return NextResponse.json(
+      { success: true, message: "Email sent successfully!" },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("Mail send error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Failed to send message";
-    return NextResponse.json({ message: errorMessage }, { status: 500 });
+    console.error("Resend error:", error);
+    const message =
+      error instanceof Error ? error.message : "Unknown error occurred";
+    return NextResponse.json(
+      { success: false, message },
+      { status: 500 }
+    );
   }
 }
