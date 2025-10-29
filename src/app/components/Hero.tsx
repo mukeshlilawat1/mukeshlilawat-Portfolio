@@ -15,6 +15,9 @@ import {
   FaCode,
   FaChartLine,
   FaTrophy,
+  FaStar,
+  FaUsers,
+  FaBook,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { fadeInUp, scaleIn } from "@/utils/animations";
@@ -29,7 +32,14 @@ const Hero = () => {
     contests: 0,
   });
 
+  const [github, setGithub] = useState({
+    repos: 0,
+    followers: 0,
+    stars: 0,
+  });
+
   const [loading, setLoading] = useState(true);
+  const [gitLoading, setGitLoading] = useState(true);
 
   useEffect(() => {
     async function fetchLeetcodeData() {
@@ -71,8 +81,26 @@ const Hero = () => {
         setLoading(false);
       }
     }
+    async function fetchGithubData() {
+      try {
+        setGitLoading(true);
+        const res = await fetch("/api/github", { cache: "no-store" });
+        const result = await res.json();
+
+        setGithub({
+          repos: result.publicRepos,
+          followers: result.followers,
+          stars: result.stars,
+        });
+        setGitLoading(false);
+      } catch (error) {
+        console.error("GitHub fetch error:", error);
+        setGitLoading(false);
+      }
+    }
 
     fetchLeetcodeData();
+    fetchGithubData();
   }, []);
 
   return (
@@ -200,7 +228,7 @@ const Hero = () => {
               },
               {
                 icon: FaDiscord,
-                link: "https://discord.com/users/mukeshlilawat",
+                link: "https://discord.gg/NDYV6NaZ",
                 label: "Discord",
               },
               {
@@ -215,7 +243,7 @@ const Hero = () => {
               },
               {
                 icon: FaYoutube,
-                link: "https://www.youtube.com/@StackHuntByLilawat",
+                link: "https://www.youtube.com/@MukeshLilawat1",
                 label: "YouTube",
               },
             ].map((social, index) => (
@@ -377,8 +405,9 @@ const Hero = () => {
                 </p>
                 <motion.div whileHover={{ scale: 1.05 }}>
                   <Link
-                    href="/public/lilawat1.pdf"
+                    href="/lilawat1.pdf"
                     target="_blank"
+                    rel="noopener noreferrer"
                     download
                     className="inline-flex items-center gap-2 md:gap-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-5 md:px-6 py-2 md:py-3 rounded-lg md:rounded-xl shadow-md hover:shadow-blue-500/40 transition-all duration-300 text-sm md:text-base font-semibold"
                   >
@@ -389,6 +418,74 @@ const Hero = () => {
               </motion.div>
             </div>
             <div className="absolute inset-0 rounded-3xl bg-blue-400 opacity-20 blur-3xl -z-10 animate-pulse"></div>
+          </motion.div>
+
+          {/* ====================== GITHUB SECTION ====================== */}
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 120, damping: 10 }}
+            className="relative rounded-3xl shadow-xl hover:shadow-gray-400/40 mt-16 md:mt-20"
+          >
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-gray-800 via-gray-600 to-black p-[2px]"></div>
+            <div className="relative bg-white dark:bg-gray-900 rounded-3xl px-6 md:px-8 py-8 md:py-10 text-center z-10 border border-gray-400/30 dark:border-gray-700/30">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="flex justify-center items-center gap-3 mb-4">
+                  <FaGithub className="text-3xl md:text-4xl text-gray-700 drop-shadow-lg" />
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100">
+                    My GitHub Stats
+                  </h3>
+                </div>
+
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  Open source fuels innovation. Here’s how I contribute 💻
+                </p>
+
+                <div className="bg-gradient-to-tr from-gray-50 via-white to-gray-100 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 rounded-2xl py-6 px-8 shadow-inner border border-gray-200 dark:border-gray-700">
+                  {gitLoading ? (
+                    <div className="animate-pulse">
+                      <h4 className="text-3xl font-bold text-gray-500 mb-2">
+                        Loading...
+                      </h4>
+                      <p className="text-gray-400 text-sm">
+                        Fetching your GitHub stats...
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-gray-800 dark:text-gray-200 text-lg font-semibold">
+                        <div className="flex flex-col items-center">
+                          <FaBook className="text-blue-500 text-3xl mb-1" />
+                          <p>{github.repos} Repositories</p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                          <FaUsers className="text-green-500 text-3xl mb-1" />
+                          <p>{github.followers} Followers</p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                          <FaStar className="text-yellow-500 text-3xl mb-1" />
+                          <p>{github.stars} Stars</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <motion.div whileHover={{ scale: 1.05 }} className="mt-6">
+                  <Link
+                    href="https://github.com/mukeshlilawat1"
+                    target="_blank"
+                    className="inline-flex items-center gap-2 bg-gray-800 text-white px-5 py-3 rounded-lg shadow-md hover:bg-gray-900 transition-all duration-300 text-sm md:text-base font-semibold"
+                  >
+                    <FaGithub className="text-xl" /> Visit My GitHub
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </div>
+            <div className="absolute inset-0 rounded-3xl bg-gray-700 opacity-20 blur-3xl -z-10 animate-pulse"></div>
           </motion.div>
         </div>
       </section>
