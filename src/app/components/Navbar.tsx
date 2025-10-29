@@ -10,6 +10,7 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const pathName = usePathname();
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -19,7 +20,7 @@ const Navbar = () => {
     { href: "/about", label: "About" },
     { href: "/blogs", label: "Blogs" },
     { href: "/projects", label: "Projects" },
-    { href: "/certificates", label: "Certificates" }, // ✅ Added Certificates
+    { href: "/certificates", label: "Certificates" },
     { href: "/github", label: "GitHub" },
     { href: "/contact", label: "Contact" },
   ];
@@ -80,13 +81,15 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* 🌙 Mobile Menu (Scrollable Fix Added) */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-500 ${
-            isMobileMenuOpen ? "max-h-96 opacity-100 py-4" : "max-h-0 opacity-0"
+          className={`md:hidden transition-all duration-500 overflow-hidden ${
+            isMobileMenuOpen
+              ? "max-h-[80vh] opacity-100 py-4"
+              : "max-h-0 opacity-0"
           }`}
         >
-          <div className="space-y-4">
+          <div className="space-y-4 overflow-y-auto max-h-[70vh] px-1 scrollbar-thin scrollbar-thumb-blue-500/50 scrollbar-track-transparent">
             {MenuItems.map((item, index) => (
               <div onClick={toggleMobileMenu} key={index}>
                 <Link
