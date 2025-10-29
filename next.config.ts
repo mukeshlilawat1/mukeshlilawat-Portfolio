@@ -12,13 +12,12 @@ const nextConfig = {
       },
     ],
   },
-
   eslint: {
-    // 🚀 Ignore ESLint errors during builds
+    // 💥 Disable ESLint during production build (for Vercel)
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // 🚀 Ignore type errors during builds
+    // 💥 Disable TypeScript build errors (Unexpected any, etc.)
     ignoreBuildErrors: true,
   },
 };
