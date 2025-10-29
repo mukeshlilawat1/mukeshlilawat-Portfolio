@@ -20,6 +20,7 @@ const Navbar = () => {
     { href: "/blogs", label: "Blogs" },
     { href: "/projects", label: "Projects" },
     { href: "/certificates", label: "Certificates" }, // ✅ Added Certificates
+    { href: "/github", label: "GitHub" },
     { href: "/contact", label: "Contact" },
   ];
 
