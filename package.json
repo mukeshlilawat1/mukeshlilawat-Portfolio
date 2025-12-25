@@ -14,7 +14,7 @@
     "@vercel/og": "^0.8.5",
     "@vercel/speed-insights": "^1.2.0",
     "framer-motion": "^12.23.24",
-    "next": "^15.5.4",
+    "next": "15.5.9",
     "nodemailer": "^7.0.10",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
