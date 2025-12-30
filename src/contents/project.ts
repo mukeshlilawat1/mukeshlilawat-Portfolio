@@ -14,9 +14,9 @@ export const projects: Project[] = [
     title: 'Mountain Mirage Hotel',
     description: 'A hotel management web application for Mountain Mirage Hotel with reservations and admin dashboard.',
     technologies: ['Spring Boot', 'React', 'Tailwind CSS', 'PostgreSQL', 'AWS'],
-    githubLink: '',
-    demoLink: '',
-    Image: '/projects/coming-soon.png',
+    githubLink: 'https://github.com/mukeshlilawat1/Hotel-Mountain-Mirage',
+    demoLink: 'https://hotel-mountain-mirage.vercel.app/home',
+    Image: '/projects/mountain.png',
   },
   {
     title: 'Instagram Clone',
