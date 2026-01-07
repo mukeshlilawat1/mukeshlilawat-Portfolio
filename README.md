@@ -1,8 +1,22 @@
+<div align="center">
+
 # Mukesh Lilawat - Portfolio
+
+[![GitHub stars](https://img.shields.io/github/stars/mukeshllawat1/mukeshllawat-Portfolio?style=for-the-badge&logo=github)](https://github.com/mukeshllawat1/mukeshllawat-Portfolio/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/mukeshllawat1/mukeshllawat-Portfolio?style=for-the-badge&logo=github)](https://github.com/mukeshllawat1/mukeshllawat-Portfolio/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/mukeshllawat1/mukeshllawat-Portfolio?style=for-the-badge&logo=github)](https://github.com/mukeshllawat1/mukeshllawat-Portfolio/issues)
+[![GitHub license](https://img.shields.io/github/license/mukeshllawat1/mukeshllawat-Portfolio?style=for-the-badge)](https://github.com/mukeshllawat1/mukeshllawat-Portfolio/blob/main/LICENSE)
+
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com)
 
 A high-performance, production-ready portfolio application built with modern web technologies, demonstrating best practices in full-stack development, UI/UX design, and software architecture.
 
-**Live Application:** [mukeshllawat.online](https://mukeshllawat.online)
+**[Live Demo](https://mukeshllawat.online)** | **[Documentation](#table-of-contents)** | **[Report Bug](https://github.com/mukeshllawat1/mukeshllawat-Portfolio/issues)** | **[Request Feature](https://github.com/mukeshllawat1/mukeshllawat-Portfolio/issues)**
+
+</div>
 
 ---
 
