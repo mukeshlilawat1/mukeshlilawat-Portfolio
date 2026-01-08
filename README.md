@@ -352,8 +352,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 **Mukesh Lilawat**
 
 - Portfolio: [mukeshllawat.online](https://mukeshllawat.online)
-- GitHub: [@mukeshllawat1](https://github.com/mukeshllawat1)
-
+  
 For professional inquiries, collaboration opportunities, or technical discussions, please reach out through the contact form on the portfolio website.
 
 ---
