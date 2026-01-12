@@ -318,7 +318,7 @@ mukeshllawat-Portfolio/
 | Safari | Last 2 versions |
 | Edge | Last 2 versions |
 | Mobile Safari | iOS 12+ |
-| Chrome Mobile | Android 8+ |
+| Chrome Mobile | Android 10+ |
 
 ---
 
