@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  metadataBase: new URL("https://mukeshlilawat.online/"), // ⚡ Production domain
+export const metadata: Metadata = {
+  metadataBase: new URL("https://mukeshlilawat.online/"),
   title: "Mukesh Lilawat – Full-Stack Developer & AI/ML Enthusiast",
   description:
     "Mukesh Lilawat – Full-Stack Developer with expertise in Java, React, Spring Boot & AI/ML. Explore projects, portfolio, and innovative web apps.",
@@ -37,15 +37,12 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-    },
+    googleBot: { index: true, follow: true },
   },
   openGraph: {
     title: "Mukesh Lilawat – Full-Stack Developer & AI/ML Enthusiast",
     description:
-      "Passionate Full-Stack Developer Mukesh Lilawat creating innovative web apps using Java, React, Spring Boot & AI/ML.",
+      "Passionate Full-Stack Developer creating innovative web apps using Java, React, Spring Boot & AI/ML.",
     url: "/",
     siteName: "Mukesh Lilawat Portfolio",
     type: "website",
@@ -80,16 +77,52 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white transition-colors dark:bg-gray-900 dark:text-white`}
+        className={`
+          ${geistSans.variable} ${geistMono.variable}
+          antialiased
+          min-h-screen
+          text-gray-900 dark:text-gray-100
+          transition-colors duration-300
+          /* ── Light mode: soft warm-white base ── */
+          bg-[#f8f7ff]
+          /* ── Dark mode: true deep ink ── */
+          dark:bg-[#09090f]
+        `}
+        style={{
+          /* 
+           * Light: very subtle violet-tinted white with a faint radial glow
+           * Dark:  deep space-ink with a soft indigo aurora at the top
+           */
+          backgroundImage: `
+            radial-gradient(ellipse 80% 50% at 50% -10%,
+              rgba(99,102,241,0.08) 0%,
+              transparent 70%)
+          `,
+        }}
       >
+        {/* Global noise texture overlay — adds depth without being heavy */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-0 opacity-[0.025] dark:opacity-[0.04]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+            backgroundRepeat: "repeat",
+            backgroundSize: "128px 128px",
+          }}
+        />
+
         <ThemeProvider>
-          <Navbar />
-          <main className="min-h-screen pt-24">{children}</main>
-          <Footer />
+          <div className="relative z-10 flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-1 pt-24">{children}</main>
+            <Footer />
+          </div>
         </ThemeProvider>
+
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

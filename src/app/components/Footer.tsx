@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaGithub,
   FaLinkedinIn,
@@ -17,37 +18,37 @@ const socialLinks = [
     href: "https://github.com/mukeshlilawat1",
     icon: <FaGithub />,
     label: "GitHub",
-    hover: "hover:text-gray-900 dark:hover:text-gray-100",
+    color: "#6366f1",
   },
   {
     href: "https://www.linkedin.com/in/mukeshlilawat1",
     icon: <FaLinkedinIn />,
     label: "LinkedIn",
-    hover: "hover:text-blue-600 dark:hover:text-blue-400",
+    color: "#0ea5e9",
   },
   {
     href: "https://discord.gg/NDYV6NaZ",
     icon: <FaDiscord />,
     label: "Discord",
-    hover: "hover:text-indigo-600 dark:hover:text-indigo-400",
+    color: "#8b5cf6",
   },
   {
     href: "https://x.com/coder_lilawat",
     icon: <FaTwitter />,
     label: "Twitter",
-    hover: "hover:text-sky-500 dark:hover:text-sky-400",
+    color: "#38bdf8",
   },
   {
     href: "https://www.instagram.com/mukeshlilawat1",
     icon: <FaInstagram />,
     label: "Instagram",
-    hover: "hover:text-pink-500 dark:hover:text-pink-400",
+    color: "#ec4899",
   },
   {
     href: "https://www.youtube.com/@MukeshLilawat1",
     icon: <FaYoutube />,
     label: "YouTube",
-    hover: "hover:text-red-500 dark:hover:text-red-400",
+    color: "#ef4444",
   },
 ];
 
@@ -64,9 +65,9 @@ const Footer = () => {
   const [showTopBtn, setShowTopBtn] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setShowTopBtn(window.scrollY > 300);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const fn = () => setShowTopBtn(window.scrollY > 300);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
   }, []);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -75,82 +76,136 @@ const Footer = () => {
     <>
       <style>{`
         @keyframes gradShift {
-          0%,100% { background-position:0% 50%; }
-          50%      { background-position:100% 50%; }
+          0%,100% { background-position: 0% 50%; }
+          50%      { background-position: 100% 50%; }
         }
         .footer-logo {
-          background: linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899,#6366f1);
+          background: linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899,#f59e0b,#6366f1);
           background-size: 300% 300%;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
-          animation: gradShift 6s ease infinite;
+          animation: gradShift 5s ease infinite;
         }
+        @keyframes heartbeat {
+          0%,100% { transform: scale(1); }
+          50%      { transform: scale(1.35); }
+        }
+        .heart { animation: heartbeat 1.3s ease-in-out infinite; display: inline-block; }
       `}</style>
 
       <footer
         className="relative mt-20 overflow-hidden
-        border-t border-gray-200 dark:border-white/[0.06]
-        bg-white/80 dark:bg-gray-950/80
-        backdrop-blur-2xl
-        text-gray-600 dark:text-gray-400
+        border-t border-gray-100 dark:border-white/[0.06]
+        bg-white/80 dark:bg-gray-950/80 backdrop-blur-2xl
         transition-all duration-500"
       >
-        {/* Top accent line */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px]
-          bg-gradient-to-r from-transparent via-indigo-400/50 dark:via-indigo-500/40 to-transparent"
+        {/* ── Animated blobs ── */}
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], x: [0, 24, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[-60px] left-[-80px] w-72 h-72 rounded-full
+            bg-indigo-100/50 dark:bg-indigo-500/5 blur-[70px] pointer-events-none"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], x: [0, -24, 0] }}
+          transition={{
+            duration: 13,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 3,
+          }}
+          className="absolute bottom-[-40px] right-[-60px] w-64 h-64 rounded-full
+            bg-pink-100/50 dark:bg-violet-500/5 blur-[70px] pointer-events-none"
         />
 
-        {/* Subtle bg blob */}
+        {/* ── Top gradient line ── */}
         <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px]
-          bg-indigo-100/40 dark:bg-indigo-600/5 blur-[80px] pointer-events-none"
+          className="absolute inset-x-0 top-0 h-[2px]"
+          style={{
+            background:
+              "linear-gradient(90deg,transparent,#6366f1,#8b5cf6,#ec4899,#f59e0b,transparent)",
+          }}
         />
 
-        <div className="relative container max-w-5xl mx-auto px-6 py-12 flex flex-col items-center gap-7 text-center">
-          {/* Brand */}
-          <div className="flex flex-col items-center gap-1">
+        <div className="relative container max-w-5xl mx-auto px-6 py-14 flex flex-col items-center gap-8 text-center">
+          {/* ── Brand ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true }}
+            className="flex flex-col items-center gap-2"
+          >
             <Link
               href="/"
-              className="footer-logo text-4xl font-black tracking-tight"
+              className="footer-logo text-4xl sm:text-5xl font-black tracking-tight"
             >
               Lilawat™
             </Link>
             <p className="text-xs text-gray-400 dark:text-gray-600 mt-1">
-              © {new Date().getFullYear()} Mukesh Lilawat · All rights reserved.
+              Building the web, one line at a time.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Divider */}
-          <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-indigo-300/60 dark:via-indigo-500/40 to-transparent" />
+          {/* ── Gradient divider ── */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true }}
+            className="w-24 h-[2px] rounded-full"
+            style={{
+              background: "linear-gradient(90deg,#6366f1,#8b5cf6,#ec4899)",
+            }}
+          />
 
-          {/* Socials */}
-          <div className="flex items-center justify-center gap-5">
-            {socialLinks.map(({ href, icon, label, hover }, i) => (
-              <Link
+          {/* ── Socials ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="flex items-center justify-center gap-4 sm:gap-6"
+          >
+            {socialLinks.map(({ href, icon, label, color }, i) => (
+              <motion.div
                 key={i}
-                href={href}
-                target="_blank"
-                aria-label={label}
-                className={`group relative text-2xl text-gray-400 dark:text-gray-600
-                  ${hover} transition-all duration-300 hover:scale-125 hover:-translate-y-1`}
+                whileHover={{ y: -6, scale: 1.25 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
               >
-                {icon}
-                <span
-                  className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 text-[10px] font-medium
-                  bg-gray-900 text-white rounded-md
-                  opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                  pointer-events-none whitespace-nowrap"
+                <Link
+                  href={href}
+                  target="_blank"
+                  aria-label={label}
+                  className="group relative flex items-center justify-center text-2xl
+                    text-gray-400 dark:text-gray-600 transition-colors duration-300"
+                  onMouseEnter={(e) => (e.currentTarget.style.color = color)}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
                 >
-                  {label}
-                </span>
-              </Link>
+                  {icon}
+                  <span
+                    className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1
+                    text-[10px] font-semibold bg-gray-900 dark:bg-gray-800 text-white rounded-lg
+                    opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0
+                    transition-all duration-200 pointer-events-none whitespace-nowrap"
+                  >
+                    {label}
+                  </span>
+                </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          {/* Nav links */}
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          {/* ── Nav links ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="flex flex-wrap justify-center gap-x-6 gap-y-2"
+          >
             {footerLinks.map(({ href, label }, i) => (
               <Link
                 key={i}
@@ -161,32 +216,107 @@ const Footer = () => {
               >
                 {label}
                 <span
-                  className="absolute -bottom-0.5 left-0 w-0 h-[1px]
-                  bg-indigo-400 group-hover:w-full transition-all duration-300"
+                  className="absolute -bottom-0.5 left-0 w-0 h-[1.5px] rounded-full
+                  group-hover:w-full transition-all duration-300"
+                  style={{
+                    background: "linear-gradient(90deg,#6366f1,#ec4899)",
+                  }}
                 />
               </Link>
             ))}
-          </div>
+          </motion.div>
 
-          <p className="text-[11px] text-gray-400 dark:text-gray-700 italic">
-            Crafted with ❤️ using Next.js, Tailwind CSS & a lot of ☕
-          </p>
+          {/* ── Thin divider ── */}
+          <div
+            className="w-full h-[1px]"
+            style={{
+              background:
+                "linear-gradient(90deg,transparent,rgba(99,102,241,0.25),transparent)",
+            }}
+          />
+
+          {/* ── Copyright ── */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="flex flex-col items-center gap-1.5"
+          >
+            <p className="text-xs text-gray-400 dark:text-gray-600">
+              © {new Date().getFullYear()} Mukesh Lilawat · All rights reserved.
+            </p>
+            <p className="text-[11px] text-gray-400 dark:text-gray-700">
+              Crafted with <span className="heart text-red-500">❤️</span> using{" "}
+              <span
+                className="font-semibold"
+                style={{
+                  background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Next.js
+              </span>
+              {", "}
+              <span
+                className="font-semibold"
+                style={{
+                  background: "linear-gradient(90deg,#38bdf8,#6366f1)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Tailwind
+              </span>
+              {" & "}
+              <span
+                className="font-semibold"
+                style={{
+                  background: "linear-gradient(90deg,#ec4899,#f59e0b)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Framer Motion
+              </span>
+            </p>
+          </motion.div>
         </div>
+
+        {/* ── Bottom gradient line ── */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-[1px]"
+          style={{
+            background:
+              "linear-gradient(90deg,transparent,#ec4899,#8b5cf6,#6366f1,transparent)",
+          }}
+        />
       </footer>
 
-      {/* Back to top */}
-      {showTopBtn && (
-        <button
-          onClick={scrollToTop}
-          aria-label="Back to top"
-          className="fixed bottom-6 right-6 z-50 p-3.5 rounded-2xl text-white
-            bg-indigo-600 hover:bg-indigo-500
-            shadow-lg shadow-indigo-300/40 dark:shadow-indigo-500/30
-            transition-all duration-300 hover:scale-110 hover:-translate-y-1"
-        >
-          <FaArrowUp className="text-lg" />
-        </button>
-      )}
+      {/* ── Back to top ── */}
+      <AnimatePresence>
+        {showTopBtn && (
+          <motion.button
+            key="top-btn"
+            initial={{ opacity: 0, scale: 0.4, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.4, y: 20 }}
+            whileHover={{ scale: 1.12, y: -4 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            onClick={scrollToTop}
+            aria-label="Back to top"
+            className="fixed bottom-6 right-6 z-50 p-3.5 rounded-2xl text-white
+              shadow-lg shadow-indigo-300/40 dark:shadow-indigo-500/30"
+            style={{
+              background: "linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899)",
+            }}
+          >
+            <FaArrowUp className="text-lg" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </>
   );
 };

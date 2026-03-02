@@ -16,6 +16,8 @@ interface StatItem {
   value: number;
   max: number;
   color: string;
+  gradFrom: string;
+  gradTo: string;
   trackLight: string;
   trackDark: string;
   textColor: string;
@@ -25,26 +27,28 @@ interface StatItem {
   borderDark: string;
 }
 
-/* ── Animated SVG Ring ── */
 function Ring({
   pct,
-  color,
+  gradFrom,
+  gradTo,
   trackColor,
-  size = 72,
+  size = 76,
   stroke = 6,
   children,
 }: {
   pct: number;
-  color: string;
+  gradFrom: string;
+  gradTo: string;
   trackColor: string;
   size?: number;
   stroke?: number;
   children?: React.ReactNode;
 }) {
+  const id = `grad-${gradFrom.replace("#", "")}`;
   const r = (size - stroke) / 2;
   const circ = 2 * Math.PI * r;
-  const safePct = Number.isFinite(pct) ? Math.min(pct, 100) : 0;
-  const offset = circ - (safePct / 100) * circ;
+  const safe = Number.isFinite(pct) ? Math.min(pct, 100) : 0;
+  const offset = circ - (safe / 100) * circ;
 
   return (
     <div
@@ -52,6 +56,12 @@ function Ring({
       style={{ width: size, height: size }}
     >
       <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
+        <defs>
+          <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor={gradFrom} />
+            <stop offset="100%" stopColor={gradTo} />
+          </linearGradient>
+        </defs>
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -65,13 +75,13 @@ function Ring({
           cy={size / 2}
           r={r}
           fill="none"
-          stroke={color}
+          stroke={`url(#${id})`}
           strokeWidth={stroke}
           strokeLinecap="round"
           strokeDasharray={circ}
           initial={{ strokeDashoffset: circ }}
           animate={{ strokeDashoffset: offset }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+          transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
@@ -81,7 +91,6 @@ function Ring({
   );
 }
 
-/* ── Stat Card ── */
 function StatCard({
   item,
   index,
@@ -107,22 +116,22 @@ function StatCard({
       setCount(0);
       return;
     }
-    let current = 0;
+    let cur = 0;
     const steps = 60;
     const inc = safeValue / steps;
     const timer = setInterval(() => {
-      current += inc;
-      if (current >= safeValue) {
+      cur += inc;
+      if (cur >= safeValue) {
         setCount(safeValue);
         clearInterval(timer);
-      } else setCount(Math.floor(current));
+      } else setCount(Math.floor(cur));
     }, 1200 / steps);
     return () => clearInterval(timer);
   }, [inView, safeValue]);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{
         delay: index * 0.1,
@@ -130,22 +139,30 @@ function StatCard({
         ease: [0.22, 1, 0.36, 1],
       }}
       viewport={{ once: true }}
-      whileHover={{ y: -4, scale: 1.02 }}
+      whileHover={{ y: -5, scale: 1.03 }}
       className={`flex flex-col items-center gap-3 p-4 sm:p-5 rounded-2xl border transition-all duration-300
         ${item.bgLight} ${item.borderLight}
         dark:${item.bgDark} dark:${item.borderDark}`}
     >
+      {/* Shimmer top */}
+      <div
+        className="absolute inset-x-0 top-0 h-[1px] rounded-t-2xl"
+        style={{
+          background: `linear-gradient(90deg,transparent,${item.gradFrom}60,transparent)`,
+        }}
+      />
+
       <Ring
         pct={pct}
-        color={item.color}
+        gradFrom={item.gradFrom}
+        gradTo={item.gradTo}
         trackColor={track}
-        size={72}
+        size={76}
         stroke={6}
       >
-        <span className={`text-lg sm:text-xl ${item.textColor}`}>
-          {item.icon}
-        </span>
+        <span className={`text-xl ${item.textColor}`}>{item.icon}</span>
       </Ring>
+
       <div className="text-center">
         <span
           ref={ref}
@@ -157,10 +174,14 @@ function StatCard({
           {item.label}
         </span>
       </div>
+
+      {/* Gradient mini bar */}
       <div className="w-full h-1 rounded-full bg-gray-100 dark:bg-white/[0.06] overflow-hidden">
         <motion.div
           className="h-full rounded-full"
-          style={{ background: item.color }}
+          style={{
+            background: `linear-gradient(90deg,${item.gradFrom},${item.gradTo})`,
+          }}
           initial={{ width: "0%" }}
           whileInView={{ width: `${Number.isFinite(pct) ? pct : 0}%` }}
           transition={{
@@ -178,7 +199,6 @@ function StatCard({
   );
 }
 
-/* ── Main Component ── */
 export default function GitHubStats() {
   const [ghData, setGhData] = useState({
     repos: 0,
@@ -203,29 +223,19 @@ export default function GitHubStats() {
   }, []);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch("/api/github", { cache: "no-store" });
-        const result = await res.json();
-
-        // Log raw response so we can debug in browser console
-        console.log("GitHubStats API response:", result);
-
+    fetch("/api/github", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((result) => {
         setGhData({
-          // Support both naming conventions just in case
           repos: Number(result.publicRepos ?? result.public_repos ?? 0),
           followers: Number(result.followers ?? 0),
           following: Number(result.following ?? 0),
           stars: Number(result.stars ?? 0),
           profileUrl: result.profileUrl ?? "https://github.com/mukeshlilawat1",
         });
-      } catch (e) {
-        console.error("GitHubStats fetch error:", e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   const statItems: StatItem[] = [
@@ -234,6 +244,8 @@ export default function GitHubStats() {
       label: "Followers",
       value: ghData.followers,
       max: 500,
+      gradFrom: "#6366f1",
+      gradTo: "#8b5cf6",
       color: "#6366f1",
       trackLight: "#e0e7ff",
       trackDark: "#1e1b4b",
@@ -248,6 +260,8 @@ export default function GitHubStats() {
       label: "Following",
       value: ghData.following,
       max: 300,
+      gradFrom: "#8b5cf6",
+      gradTo: "#a78bfa",
       color: "#8b5cf6",
       trackLight: "#ede9fe",
       trackDark: "#2e1065",
@@ -262,6 +276,8 @@ export default function GitHubStats() {
       label: "Repos",
       value: ghData.repos,
       max: 100,
+      gradFrom: "#ec4899",
+      gradTo: "#f472b6",
       color: "#ec4899",
       trackLight: "#fce7f3",
       trackDark: "#500724",
@@ -276,6 +292,8 @@ export default function GitHubStats() {
       label: "Stars",
       value: ghData.stars,
       max: 200,
+      gradFrom: "#f59e0b",
+      gradTo: "#fbbf24",
       color: "#f59e0b",
       trackLight: "#fef3c7",
       trackDark: "#451a03",
@@ -301,9 +319,13 @@ export default function GitHubStats() {
         border border-gray-100 dark:border-white/[0.06]
         shadow-sm dark:shadow-none"
       >
+        {/* Top gradient line */}
         <div
-          className="absolute inset-x-0 top-0 h-[1px]
-          bg-gradient-to-r from-transparent via-violet-400/60 dark:via-violet-500/40 to-transparent"
+          className="absolute inset-x-0 top-0 h-[2px]"
+          style={{
+            background:
+              "linear-gradient(90deg,transparent,#6366f1,#8b5cf6,#ec4899,transparent)",
+          }}
         />
 
         {/* Header */}
@@ -311,12 +333,12 @@ export default function GitHubStats() {
           className="flex flex-col sm:flex-row sm:items-center justify-between gap-3
           px-5 sm:px-7 py-4 sm:py-5 border-b border-gray-100 dark:border-white/[0.06]"
         >
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-3">
             <div
-              className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-xl
+              className="flex items-center justify-center w-9 h-9 rounded-xl
               bg-gray-100 dark:bg-white/[0.06] border border-gray-200 dark:border-white/[0.08]"
             >
-              <FaGithub className="text-gray-800 dark:text-white text-sm sm:text-base" />
+              <FaGithub className="text-gray-800 dark:text-white" />
             </div>
             <div>
               <h2 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white">
@@ -332,8 +354,12 @@ export default function GitHubStats() {
               href={ghData.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-semibold text-indigo-500 hover:text-indigo-400
-                dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors self-start sm:self-auto"
+              className="text-xs font-semibold transition-colors self-start sm:self-auto"
+              style={{
+                background: "linear-gradient(90deg,#6366f1,#ec4899)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
             >
               View on GitHub →
             </a>
@@ -347,7 +373,7 @@ export default function GitHubStats() {
               {[...Array(4)].map((_, i) => (
                 <div
                   key={i}
-                  className="rounded-2xl bg-gray-100 dark:bg-white/[0.04] h-40 animate-pulse"
+                  className="rounded-2xl bg-gray-100 dark:bg-white/[0.04] h-44 animate-pulse"
                 />
               ))}
             </div>
@@ -372,9 +398,13 @@ export default function GitHubStats() {
           </p>
         </div>
 
+        {/* Bottom gradient line */}
         <div
-          className="absolute inset-x-0 bottom-0 h-[1px]
-          bg-gradient-to-r from-transparent via-indigo-400/30 dark:via-indigo-500/20 to-transparent"
+          className="absolute inset-x-0 bottom-0 h-[1px]"
+          style={{
+            background:
+              "linear-gradient(90deg,transparent,#f59e0b,#ec4899,transparent)",
+          }}
         />
       </div>
     </motion.section>
