@@ -1,128 +1,297 @@
 "use client";
+
 import { MoonIcon, SunIcon } from "@heroicons/react/16/solid";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "../context/themContext";
+import { motion, AnimatePresence } from "framer-motion";
+
+const MenuItems = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/blogs", label: "Blogs" },
+  { href: "/projects", label: "Projects" },
+  { href: "/certificates", label: "Certificates" },
+  { href: "/github", label: "GitHub" },
+  { href: "/contact", label: "Contact" },
+];
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathName = usePathname();
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathName]);
 
-  const MenuItems = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/blogs", label: "Blogs" },
-    { href: "/projects", label: "Projects" },
-    { href: "/certificates", label: "Certificates" },
-    { href: "/github", label: "GitHub" },
-    { href: "/contact", label: "Contact" },
-  ];
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 12);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
 
   return (
-    <nav className="fixed w-full bg-white/80 dark:bg-dark/80 backdrop-blur-xl shadow-lg shadow-blue-500/20 dark:shadow-purple-800/20 z-50 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
-      <div className="container max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 hover:scale-110 hover:tracking-wider transition-all duration-300"
-          >
-            &#9996; LILAWAT &#9733;
-          </Link>
+    <>
+      <style>{`
+        @keyframes gradShift {
+          0%,100% { background-position: 0% 50%; }
+          50%      { background-position: 100% 50%; }
+        }
+        .nav-logo {
+          background: linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899,#f59e0b,#6366f1);
+          background-size: 300% 300%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: gradShift 5s ease infinite;
+        }
+        .active-pill {
+          background: linear-gradient(135deg,#6366f1,#8b5cf6);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      `}</style>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            {MenuItems.map((item) => {
-              const isActive = pathName === item.href;
-              return (
-                <Link
-                  className={`relative font-medium transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-400 ${
-                    isActive
-                      ? "font-extrabold text-green-600 after:content-[''] after:block after:h-1 after:bg-gradient-to-r after:from-blue-500 after:to-purple-500 after:rounded-full after:mt-1 after:scale-x-100 after:origin-left animate-scaleX"
-                      : ""
-                  }`}
-                  href={item.href}
-                  key={item.href}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:text-white hover:text-blue-600 dark:hover:bg-gray-800 transition-all duration-300 shadow-md hover:shadow-lg"
-            >
-              {theme === "dark" ? (
-                <SunIcon className="w-5 h-5 animate-pulse" />
-              ) : (
-                <MoonIcon className="w-5 h-5 animate-bounce" />
-              )}
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={toggleMobileMenu}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 transform hover:scale-110"
-          >
-            {isMobileMenuOpen ? (
-              <XMarkIcon className="w-6 h-6 animate-spin text-pink-500" />
-            ) : (
-              <Bars3Icon className="w-6 h-6 text-blue-500" />
-            )}
-          </button>
-        </div>
-
-        {/* 🌙 Mobile Menu (Scrollable Fix Added) */}
-        <div
-          className={`md:hidden transition-all duration-500 overflow-hidden ${
-            isMobileMenuOpen
-              ? "max-h-[80vh] opacity-100 py-4"
-              : "max-h-0 opacity-0"
+      <motion.nav
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className={`fixed w-full z-50 transition-all duration-500
+          ${
+            scrolled
+              ? "bg-white/90 dark:bg-gray-950/90 backdrop-blur-2xl shadow-lg shadow-indigo-100/40 dark:shadow-black/40 border-b border-gray-100 dark:border-white/[0.06]"
+              : "bg-white/60 dark:bg-transparent backdrop-blur-md border-b border-transparent"
           }`}
-        >
-          <div className="space-y-4 overflow-y-auto max-h-[70vh] px-1 scrollbar-thin scrollbar-thumb-blue-500/50 scrollbar-track-transparent">
-            {MenuItems.map((item, index) => (
-              <div onClick={toggleMobileMenu} key={index}>
-                <Link
-                  href={item.href}
-                  className="block py-2 px-3 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-all duration-300 hover:scale-105"
-                >
-                  {item.label}
-                </Link>
-              </div>
-            ))}
+      >
+        {/* Gradient top accent line — visible when scrolled */}
+        <motion.div
+          animate={{ opacity: scrolled ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="absolute inset-x-0 top-0 h-[2px]"
+          style={{
+            background:
+              "linear-gradient(90deg,transparent,#6366f1,#8b5cf6,#ec4899,transparent)",
+          }}
+        />
 
-            <div>
-              <button
+        <div className="container max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* ── Logo ── */}
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                href="/"
+                className="nav-logo text-xl font-black tracking-tight"
+              >
+                ✌ LILAWAT ★
+              </Link>
+            </motion.div>
+
+            {/* ── Desktop menu ── */}
+            <div className="hidden md:flex items-center gap-1">
+              {MenuItems.map((item, i) => {
+                const active = pathName === item.href;
+                return (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.4 }}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`relative px-3 py-1.5 text-sm font-medium rounded-xl transition-all duration-200
+                        ${
+                          active
+                            ? "active-pill bg-indigo-50 dark:bg-indigo-500/10"
+                            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.06]"
+                        }`}
+                    >
+                      {item.label}
+                      {active && (
+                        <motion.span
+                          layoutId="activeUnderline"
+                          className="absolute inset-x-2 -bottom-0.5 h-[2px] rounded-full"
+                          style={{
+                            background:
+                              "linear-gradient(90deg,#6366f1,#8b5cf6)",
+                          }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 30,
+                          }}
+                        />
+                      )}
+                    </Link>
+                  </motion.div>
+                );
+              })}
+
+              {/* Theme toggle */}
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 15 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={toggleTheme}
-                className="flex items-center py-2 px-3 w-full text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-all duration-300 hover:scale-105"
+                aria-label="Toggle theme"
+                className="ml-2 w-9 h-9 flex items-center justify-center rounded-xl
+                  bg-gray-100 dark:bg-white/[0.06]
+                  border border-gray-200 dark:border-white/[0.08]
+                  text-gray-600 dark:text-gray-300
+                  hover:bg-indigo-50 dark:hover:bg-indigo-500/10
+                  hover:text-indigo-600 dark:hover:text-indigo-400
+                  hover:border-indigo-200 dark:hover:border-indigo-500/30
+                  transition-colors duration-200"
+              >
+                <AnimatePresence mode="wait">
+                  {theme === "dark" ? (
+                    <motion.span
+                      key="sun"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <SunIcon className="w-4 h-4" />
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="moon"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <MoonIcon className="w-4 h-4" />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            </div>
+
+            {/* ── Mobile right ── */}
+            <div className="flex md:hidden items-center gap-2">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={toggleTheme}
+                className="w-9 h-9 flex items-center justify-center rounded-xl
+                  bg-gray-100 dark:bg-white/[0.06]
+                  border border-gray-200 dark:border-white/[0.08]
+                  text-gray-600 dark:text-gray-300 transition-colors duration-200"
               >
                 {theme === "dark" ? (
-                  <>
-                    <SunIcon className="w-5 h-5 mr-2 animate-pulse" />
-                    Light Mode
-                  </>
+                  <SunIcon className="w-4 h-4" />
                 ) : (
-                  <>
-                    <MoonIcon className="w-5 h-5 mr-2 animate-bounce" />
-                    Dark Mode
-                  </>
+                  <MoonIcon className="w-4 h-4" />
                 )}
-              </button>
+              </motion.button>
+
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-9 h-9 flex items-center justify-center rounded-xl
+                  bg-gray-100 dark:bg-white/[0.06]
+                  border border-gray-200 dark:border-white/[0.08]
+                  text-gray-700 dark:text-gray-300 transition-colors duration-200"
+              >
+                <AnimatePresence mode="wait">
+                  {isOpen ? (
+                    <motion.span
+                      key="x"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <XMarkIcon className="w-5 h-5" />
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="bars"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <Bars3Icon className="w-5 h-5" />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.button>
             </div>
           </div>
         </div>
-      </div>
-    </nav>
+
+        {/* ── Mobile dropdown ── */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              key="mobile-menu"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="container max-w-7xl mx-auto px-4 pb-4 pt-1">
+                <div
+                  className="rounded-2xl overflow-hidden
+                  bg-white dark:bg-gray-900
+                  border border-gray-100 dark:border-white/[0.07]
+                  shadow-xl shadow-gray-200/60 dark:shadow-black/40
+                  divide-y divide-gray-100 dark:divide-white/[0.05]"
+                >
+                  {MenuItems.map((item, i) => {
+                    const active = pathName === item.href;
+                    return (
+                      <motion.div
+                        key={item.href}
+                        initial={{ opacity: 0, x: -16 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.04, duration: 0.3 }}
+                      >
+                        <Link
+                          href={item.href}
+                          className={`flex items-center justify-between px-5 py-3.5 text-sm font-medium transition-colors duration-200
+                            ${
+                              active
+                                ? "bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-500/10 dark:to-violet-500/10"
+                                : "hover:bg-gray-50 dark:hover:bg-white/[0.04]"
+                            }`}
+                        >
+                          <span
+                            className={
+                              active
+                                ? "active-pill"
+                                : "text-gray-700 dark:text-gray-300"
+                            }
+                          >
+                            {item.label}
+                          </span>
+                          {active && (
+                            <span
+                              className="w-1.5 h-1.5 rounded-full"
+                              style={{
+                                background:
+                                  "linear-gradient(135deg,#6366f1,#8b5cf6)",
+                              }}
+                            />
+                          )}
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
+    </>
   );
 };
 
