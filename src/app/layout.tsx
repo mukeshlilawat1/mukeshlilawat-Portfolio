@@ -17,6 +17,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Mukesh Lilawat",
+  url: "https://mukeshlilawat.online",
+  image: "https://mukeshlilawat.online/profile.jpg",
+  sameAs: [
+    "https://github.com/mukeshlilawat1",
+    "https://www.linkedin.com/in/mukeshlilawat1",
+    "https://medium.com/@mukeshlilawat",
+    "https://www.wikidata.org/wiki/Q138586453",
+  ],
+  jobTitle: "Full Stack Developer",
+  worksFor: {
+    "@type": "Organization",
+    name: "Lilawat Tech",
+  },
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://mukeshlilawat.online/"),
   title: "Mukesh Lilawat – Full-Stack Developer & AI/ML Enthusiast",
@@ -78,6 +97,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personSchema),
+          }}
+        />
+      </head>
+
       <body
         className={`
           ${geistSans.variable} ${geistMono.variable}
@@ -91,7 +119,7 @@ export default function RootLayout({
           dark:bg-[#09090f]
         `}
         style={{
-          /* 
+          /*
            * Light: very subtle violet-tinted white with a faint radial glow
            * Dark:  deep space-ink with a soft indigo aurora at the top
            */
