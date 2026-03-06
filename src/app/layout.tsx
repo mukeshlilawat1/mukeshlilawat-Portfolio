@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import { ThemeProvider } from "./context/themContext";
@@ -17,24 +18,174 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Mukesh Lilawat",
-  url: "https://mukeshlilawat.online",
-  image: "https://mukeshlilawat.online/profile.jpg",
-  sameAs: [
-    "https://github.com/mukeshlilawat1",
-    "https://www.linkedin.com/in/mukeshlilawat1",
-    "https://medium.com/@mukeshlilawat",
-    "https://www.wikidata.org/wiki/Q138586453",
-  ],
-  jobTitle: "Full Stack Developer",
-  worksFor: {
-    "@type": "Organization",
-    name: "Lilawat Tech",
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://mukeshlilawat.online/#person",
+    name: "Mukesh Lilawat",
+    url: "https://mukeshlilawat.online",
+    image: "https://mukeshlilawat.online/profile.jpg",
+    jobTitle: "Full Stack Developer",
+    description:
+      "Mukesh Lilawat is a Full-Stack Developer from Jodhpur, Rajasthan, India, specializing in Java, Spring Boot, React and AI/ML. Co-founder of MG Tech Studio and creator of Lilawat Tech Blog.",
+    nationality: "Indian",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Jodhpur",
+      addressRegion: "Rajasthan",
+      addressCountry: "IN",
+    },
+    sameAs: [
+      "https://github.com/mukeshlilawat1",
+      "https://www.linkedin.com/in/mukeshlilawat1",
+      "https://medium.com/@mukeshlilawat",
+      "https://dev.to/mukeshlilawat",
+      "https://hashnode.com/@mukeshlilawat",
+      "https://stackoverflow.com/users/23341185/mukesh-lilawat",
+      "https://www.wikidata.org/wiki/Q138586453",
+      "https://x.com/coder_lilawat",
+      "https://x.com/mukeshlilawat11",
+      "https://www.lilawattechblog.in",
+      "https://hightechmg.in",
+      "https://www.instagram.com/mukeshlilawat1", // ✅ added
+      "https://www.instagram.com/mukeshlilawat7", // ✅ added
+    ],
+    worksFor: {
+      "@type": "Organization",
+      "@id": "https://mukeshlilawat.online/#organization",
+      name: "Lilawat Tech",
+      url: "https://mukeshlilawat.online",
+    },
+    knowsAbout: [
+      "Java",
+      "Spring Boot",
+      "Spring Framework",
+      "Hibernate",
+      "JDBC",
+      "React",
+      "Next.js",
+      "Node.js",
+      "Python",
+      "Flask",
+      "Full Stack Development",
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Data Science",
+      "Web Development",
+      "REST APIs",
+      "Microservices",
+      "Docker",
+      "AWS",
+      "PostgreSQL",
+      "MySQL",
+      "MongoDB",
+      "JWT Authentication",
+      "Spring Security",
+      "DSA",
+      "Competitive Programming",
+    ],
+    hasOccupation: {
+      "@type": "Occupation",
+      name: "Full Stack Developer",
+      occupationLocation: {
+        "@type": "Country",
+        name: "India",
+      },
+      skills:
+        "Java, Spring Boot, React, Next.js, AI/ML, REST APIs, Microservices",
+    },
   },
-};
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://mukeshlilawat.online/#website",
+    url: "https://mukeshlilawat.online",
+    name: "Mukesh Lilawat Portfolio",
+    description:
+      "Official portfolio of Mukesh Lilawat, Full Stack Developer and AI/ML enthusiast from Jodhpur, India.",
+    inLanguage: "en",
+    publisher: {
+      "@type": "Person",
+      "@id": "https://mukeshlilawat.online/#person",
+      name: "Mukesh Lilawat",
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://mukeshlilawat.online/?s={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://mukeshlilawat.online/#organization",
+    name: "Lilawat Tech",
+    url: "https://mukeshlilawat.online",
+    logo: "https://mukeshlilawat.online/favicon.ico",
+    founder: {
+      "@type": "Person",
+      "@id": "https://mukeshlilawat.online/#person",
+      name: "Mukesh Lilawat",
+    },
+    description:
+      "Lilawat Tech is a software development brand by Mukesh Lilawat focused on Full Stack web applications using Java, Spring Boot, and React.",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://hightechmg.in/#organization",
+    name: "MG Tech Studio",
+    url: "https://hightechmg.in",
+    description:
+      "Full-stack development studio co-founded by Mukesh Lilawat and Gaurav Kumawat. Experts in scalable backend systems and modern frontend architectures using Next.js, Spring Boot, and React.",
+    founder: [
+      {
+        "@type": "Person",
+        "@id": "https://mukeshlilawat.online/#person",
+        name: "Mukesh Lilawat",
+      },
+      {
+        "@type": "Person",
+        name: "Gaurav Kumawat",
+      },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": "https://www.lilawattechblog.in/#blog",
+    name: "Lilawat Tech Blog",
+    url: "https://www.lilawattechblog.in",
+    description:
+      "In-depth tutorials and articles on Spring Boot, React, Java, AWS, DevOps and AI/ML by Mukesh Lilawat.",
+    author: {
+      "@type": "Person",
+      "@id": "https://mukeshlilawat.online/#person",
+      name: "Mukesh Lilawat",
+    },
+    inLanguage: "en",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Hotel Mountain Mirage",
+    url: "https://hotel-mountain-mirage.vercel.app/home",
+    author: {
+      "@type": "Person",
+      "@id": "https://mukeshlilawat.online/#person",
+      name: "Mukesh Lilawat",
+    },
+    applicationCategory: "WebApplication",
+    description:
+      "A full-stack hotel booking and management web application built with React.js and Spring Boot with JWT authentication and PostgreSQL.",
+    programmingLanguage: ["Java", "JavaScript"],
+    operatingSystem: "Web",
+  },
+];
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mukeshlilawat.online/"),
@@ -51,6 +202,10 @@ export const metadata: Metadata = {
     "Spring Boot",
     "Portfolio",
     "Web Applications",
+    "Lilawat Tech",
+    "MG Tech Studio",
+    "Jodhpur Developer",
+    "Rajasthan Developer",
   ],
   authors: [{ name: "Mukesh Lilawat", url: "https://mukeshlilawat.online" }],
   robots: {
@@ -98,10 +253,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
+        <Script
+          id="schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(personSchema),
+            __html: JSON.stringify(schemaData),
           }}
         />
       </head>
@@ -113,16 +269,10 @@ export default function RootLayout({
           min-h-screen
           text-gray-900 dark:text-gray-100
           transition-colors duration-300
-          /* ── Light mode: soft warm-white base ── */
           bg-[#f8f7ff]
-          /* ── Dark mode: true deep ink ── */
           dark:bg-[#09090f]
         `}
         style={{
-          /*
-           * Light: very subtle violet-tinted white with a faint radial glow
-           * Dark:  deep space-ink with a soft indigo aurora at the top
-           */
           backgroundImage: `
             radial-gradient(ellipse 80% 50% at 50% -10%,
               rgba(99,102,241,0.08) 0%,
@@ -130,7 +280,7 @@ export default function RootLayout({
           `,
         }}
       >
-        {/* Global noise texture overlay — adds depth without being heavy */}
+        {/* Global noise texture overlay */}
         <div
           aria-hidden
           className="pointer-events-none fixed inset-0 z-0 opacity-[0.025] dark:opacity-[0.04]"
